@@ -229,3 +229,15 @@ if st.sidebar.button('Predict', use_container_width=True):
         risk_data = pd.DataFrame({'Factor': risk_factors, 'Present': risk_values})
         fig_risk = px.bar(risk_data, x='Factor', y='Present', color='Present', title='Presence of Risk Factors')
         st.plotly_chart(fig_risk)
+
+        risk_factors = ['Alcohol Drinker', 'Diabetes', 'Skin Cancer', 'Kidney Disease', 'High Risk Last Year']
+        risk_values = [alcohol_drinkers, had_diabetes, had_skin_cancer, had_kidney_disease, high_risk_last_year]
+        risk_data = pd.DataFrame({'Factor': risk_factors, 'Present': risk_values})
+        fig_risk = px.bar(risk_data, x='Factor', y='Present', color='Present', title='Presence of Risk Factors')
+        st.plotly_chart(fig_risk)
+
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error connecting to the prediction server: {str(e)}")
+
+    st.sidebar.header('About')
+    st.sidebar.info('This app predicts the likelihood of heart disease based on various health factors.')
