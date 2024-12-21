@@ -150,21 +150,22 @@ if st.sidebar.button('Predict', use_container_width=True):
             bmi = weight / (height ** 2)
             bmi_category = pd.cut([bmi], bins=[0, 18.5, 25, 30, float('inf')], labels=['Underweight', 'Normal', 'Overweight', 'Obese'])[0]
             fig_bmi = go.Figure(go.Indicator(
-                mode="gauge+number+delta",
-                value=bmi,
-                domain={'x': [0, 1], 'y': [0, 1]},
-                title={'text': "BMI"},
-                delta={'reference': 24, 'position': "top", 'valueformat': '.1f'},
-                gauge={
+                mode = "gauge+number+delta",
+                value = bmi,
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                title = {'text': "BMI"},
+                delta = {'reference': 25, 'position': "top"},
+                gauge = {
                     'axis': {'range': [None, 40]},
                     'bar': {'color': "darkblue"},
                     'steps': [
-                        {'range': [0, 23], 'color': "red"},
-                        {'range': [23, 25], 'color': "green"},
-                        {'range': [25, 40], 'color': "red"}
+                        {'range': [0, 18.5], 'color': "lightblue"},
+                        {'range': [18.5, 25], 'color': "green"},
+                        {'range': [25, 30], 'color': "yellow"},
+                        {'range': [30, 40], 'color': "red"}
                     ],
                     'threshold': {
-                        'line': {'color': "red" if bmi < 23 or bmi > 25 else "green", 'width': 4},
+                        'line': {'color': "red", 'width': 4},
                         'thickness': 0.75,
                         'value': bmi
                     }
@@ -180,6 +181,13 @@ if st.sidebar.button('Predict', use_container_width=True):
                 st.metric("", f"{bmi:.1f}", f"{bmi - 25:.1f}")
             with col1_2:
                 st.metric("Normal BMI", "25.0")
+            with col1_3:
+                if bmi > 25:
+                    st.metric("", "More than normal")
+                elif bmi < 25:
+                    st.metric("", "Less than normal")
+                else:
+                    st.metric("", "Normal")
 
         with col2:
             # Sleep Hours Visualization
