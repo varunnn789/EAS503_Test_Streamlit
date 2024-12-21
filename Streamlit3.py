@@ -147,21 +147,23 @@ if st.sidebar.button('Predict', use_container_width=True):
 
         with col1:
             # BMI Calculation and Visualization
+            # BMI Calculation and Visualization
             bmi = weight / (height ** 2)
-            bmi_category = pd.cut([bmi], bins=[0, 18.5, 25, 30, float('inf')], labels=['Underweight', 'Normal', 'Overweight', 'Obese'])[0]
+            bmi_category = pd.cut([bmi], bins=[0, 18.5, 23, 25, 30, float('inf')], labels=['Underweight', 'Normal (Low)', 'Normal (Ideal)', 'Overweight', 'Obese'])[0]
             fig_bmi = go.Figure(go.Indicator(
                 mode = "gauge+number+delta",
                 value = bmi,
                 domain = {'x': [0, 1], 'y': [0, 1]},
                 title = {'text': "BMI"},
-                delta = {'reference': 25, 'position': "top"},
+                delta = {'reference': 24, 'position': "top"},
                 gauge = {
                     'axis': {'range': [None, 40]},
                     'bar': {'color': "darkblue"},
                     'steps': [
-                        {'range': [0, 18.5], 'color': "lightblue"},
-                        {'range': [18.5, 25], 'color': "green"},
-                        {'range': [25, 30], 'color': "yellow"},
+                        {'range': [0, 18.5], 'color': "red"},
+                        {'range': [18.5, 23], 'color': "red"},
+                        {'range': [23, 25], 'color': "green"},
+                        {'range': [25, 30], 'color': "red"},
                         {'range': [30, 40], 'color': "red"}
                     ],
                     'threshold': {
@@ -172,15 +174,22 @@ if st.sidebar.button('Predict', use_container_width=True):
                 }
             ))
             st.plotly_chart(fig_bmi)
-            st.write(f"You seem to be in the {bmi_category} BMI Category")
+            st.write(f"Based on your inputs, you seem to be in the {bmi_category} BMI Category")
 
             # BMI More than or Less than counter
             st.write("BMI is:")
             col1_1, col1_2, col1_3 = st.columns(3)
             with col1_1:
-                st.metric("", f"{bmi:.1f}", f"{bmi - 25:.1f}")
+                st.metric("", f"{bmi:.1f}", f"{bmi - 24:.1f}", delta_color="inverse")
             with col1_2:
-                st.metric("Normal BMI", "25.0")
+                st.metric("Ideal BMI", "24.0")
+            with col1_3:
+                if 23 <= bmi <= 25:
+                    st.metric("", "Within ideal range", delta_color="normal")
+                elif bmi < 23:
+                    st.metric("", f"{23 - bmi:.1f} below ideal range", delta_color="inverse")
+                else:
+                    st.metric("", f"{bmi - 25:.1f} above ideal range", delta_color="inverse")
 
         with col2:
             # Sleep Hours Visualization
