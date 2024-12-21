@@ -171,7 +171,7 @@ if st.sidebar.button('Predict', use_container_width=True):
                     }
                 }
             ))
-            st.plotly_chart(fig_bmi)
+            st.plotly_chart(fig_bmi, key="bmi_chart")
             st.write(f"You seem to be in the {bmi_category} BMI Category")
 
             # BMI More than or Less than counter
@@ -206,7 +206,7 @@ if st.sidebar.button('Predict', use_container_width=True):
                     }
                 }
             ))
-            st.plotly_chart(fig_sleep)
+            st.plotly_chart(fig_sleep, key="sleep_chart")
 
         # Health Days Visualization
         health_data = pd.DataFrame({
@@ -214,7 +214,7 @@ if st.sidebar.button('Predict', use_container_width=True):
             'Days': [physical_health_days, poor_physical_health_days, mental_health_days, poor_mental_health_days]
         })
         fig_health = px.bar(health_data, x='Category', y='Days', color='Category', title='Physical and Mental Health Days in the Last Month')
-        st.plotly_chart(fig_health)
+        st.plotly_chart(fig_health, key="health_days_chart")
 
         # Risk Factors Visualization
         risk_factors = ['Alcohol Drinker', 'Diabetes', 'Skin Cancer', 'Kidney Disease', 'High Risk Last Year']
@@ -227,7 +227,7 @@ if st.sidebar.button('Predict', use_container_width=True):
         risk_values = [alcohol_drinkers, had_diabetes, had_skin_cancer, had_kidney_disease, high_risk_last_year]
         risk_data = pd.DataFrame({'Factor': risk_factors, 'Present': risk_values})
         fig_risk = px.bar(risk_data, x='Factor', y='Present', color='Present', title='Presence of Risk Factors')
-        st.plotly_chart(fig_risk)
+        st.plotly_chart(fig_risk, key="risk_factors_chart")
 
     except requests.exceptions.RequestException as e:
         st.error(f"Error connecting to the prediction server: {str(e)}")
