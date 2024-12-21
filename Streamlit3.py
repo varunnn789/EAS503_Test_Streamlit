@@ -150,12 +150,12 @@ if st.sidebar.button('Predict', use_container_width=True):
             bmi = weight / (height ** 2)
             bmi_category = pd.cut([bmi], bins=[0, 18.5, 25, 30, float('inf')], labels=['Underweight', 'Normal', 'Overweight', 'Obese'])[0]
             fig_bmi = go.Figure(go.Indicator(
-                mode = "gauge+number+delta",
-                value = bmi,
-                domain = {'x': [0, 1], 'y': [0, 1]},
-                title = {'text': "BMI"},
-                delta = {'reference': 24, 'position': "top", 'color': 'red' if bmi < 23 or bmi > 25 else 'green'},
-                gauge = {
+                mode="gauge+number+delta",
+                value=bmi,
+                domain={'x': [0, 1], 'y': [0, 1]},
+                title={'text': "BMI"},
+                delta={'reference': 24, 'position': "top", 'valueformat': '.1f'},
+                gauge={
                     'axis': {'range': [None, 40]},
                     'bar': {'color': "darkblue"},
                     'steps': [
@@ -172,6 +172,14 @@ if st.sidebar.button('Predict', use_container_width=True):
             ))
             st.plotly_chart(fig_bmi)
             st.write(f"Based on your inputs, you seem to be in the {bmi_category} BMI Category")
+
+            # BMI More than or Less than counter
+            st.write("BMI is:")
+            col1_1, col1_2, col1_3 = st.columns(3)
+            with col1_1:
+                st.metric("", f"{bmi:.1f}", f"{bmi - 25:.1f}")
+            with col1_2:
+                st.metric("Normal BMI", "25.0")
 
         with col2:
             # Sleep Hours Visualization
