@@ -181,13 +181,6 @@ if st.sidebar.button('Predict', use_container_width=True):
                 st.metric("", f"{bmi:.1f}", f"{bmi - 25:.1f}")
             with col1_2:
                 st.metric("Normal BMI", "25.0")
-            with col1_3:
-                if bmi > 25:
-                    st.metric("", "More than normal")
-                elif bmi < 25:
-                    st.metric("", "Less than normal")
-                else:
-                    st.metric("", "Normal")
 
         with col2:
             # Sleep Hours Visualization
