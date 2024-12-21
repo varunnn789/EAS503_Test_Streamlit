@@ -172,7 +172,7 @@ if st.sidebar.button('Predict', use_container_width=True):
                 }
             ))
             st.plotly_chart(fig_bmi)
-            st.write(f"Based on your inputs, you seem to be in the {bmi_category} BMI Category")
+            st.write(f"You seem to be in the {bmi_category} BMI Category")
 
             # BMI More than or Less than counter
             st.write("BMI is:")
