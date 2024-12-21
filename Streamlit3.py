@@ -6,6 +6,7 @@ import plotly.graph_objects as go
 import random
 
 API_URL = "http://146.190.78.32:8080"
+
 st.set_page_config(layout="wide")
 st.title('Heart Disease Prediction App')
 
@@ -14,8 +15,8 @@ with st.expander("ℹ️ Variable Descriptions"):
     st.write("""
     - Height: Your height in meters
     - Weight: Your weight in kilograms
-    - Physical Health Days: Number of days physical health was good (including physical illness and injury) in the past 30 days
-    - Mental Health Days: Number of days mental health was good (including stress, depression, and problems with emotions) in the past 30 days
+    - Physical Health Days: Number of days physical health was good in the past 30 days
+    - Mental Health Days: Number of days mental health was good in the past 30 days
     - Sleep Hours: Average hours of sleep per 24-hour period
     - Sex: Biological sex
     - Age Category: Age group
@@ -173,6 +174,21 @@ if st.sidebar.button('Predict', use_container_width=True):
             st.plotly_chart(fig_bmi)
             st.write(f"Based on your inputs, you seem to be in the {bmi_category} BMI Category")
 
+            # BMI More than or Less than counter
+            st.write("BMI is:")
+            col1_1, col1_2, col1_3 = st.columns(3)
+            with col1_1:
+                st.metric("", f"{bmi:.1f}", f"{bmi - 25:.1f}")
+            with col1_2:
+                st.metric("Normal BMI", "25.0")
+            with col1_3:
+                if bmi > 25:
+                    st.metric("", "More than normal")
+                elif bmi < 25:
+                    st.metric("", "Less than normal")
+                else:
+                    st.metric("", "Normal")
+
         with col2:
             # Sleep Hours Visualization
             fig_sleep = go.Figure(go.Indicator(
@@ -211,4 +227,5 @@ if st.sidebar.button('Predict', use_container_width=True):
         risk_factors = ['Alcohol Drinker', 'Diabetes', 'Skin Cancer', 'Kidney Disease', 'High Risk Last Year']
         risk_values = [alcohol_drinkers, had_diabetes, had_skin_cancer, had_kidney_disease, high_risk_last_year]
         risk_data = pd.DataFrame({'Factor': risk_factors, 'Present': risk_values})
-        fig_risk = px.bar(risk_data, x='Factor',
+        fig_risk = px.bar(risk_data, x='Factor', y='Present', color='Present', title='Presence of Risk Factors')
+        st.plotly_chart(fig_risk)
